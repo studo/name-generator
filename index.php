@@ -45,15 +45,13 @@ else { $selected_suffixes = array(); }
             </select>
             <input type="submit" value="Submit" />
         </form>
-<?php if (1) { ?>
-<?php     foreach ($selected_seeds as $key => $seed) { ?>
+<?php foreach ($selected_seeds as $key => $seed) { ?>
         <h3><?php print $seed; ?></h3>
         <ul>
-<?php         foreach ($selected_suffixes as $suffix) { ?>
+<?php     foreach ($selected_suffixes as $suffix) { ?>
             <li><?php print $seed.$suffix; ?></li>
-<?php         } ?>
-        </ul>
 <?php     } ?>
+        </ul>
 <?php } ?>
     </body>
 </html>
