@@ -1,27 +1,31 @@
 <?php
-$config_file = '/var/www/private/configs/name_generator.yml';
-require_once('/var/www/private/db_connection/general.php');
+	$config_file = '/var/www/private/configs/name_generator.yml';
+	require_once('/var/www/private/db_connection/general.php');
 
-$all_seeds    = $database->query_to_list("SELECT word FROM seeds ORDER BY word ASC;");
-$all_suffixes = $database->query_to_list("SELECT suffix FROM suffixes ORDER BY suffix ASC;");
-//print_r($seeds);
-//print_r($suffixes);
+	$all_seeds    = $database->query_to_list("SELECT word FROM seeds ORDER BY word ASC;");
+	$all_suffixes = $database->query_to_list("SELECT suffix FROM suffixes ORDER BY suffix ASC;");
+	//print_r($seeds);
+	//print_r($suffixes);
 
-if ( isset($_GET['seed']) && $_GET['seed']!='' ) {
-    $selected_seeds = $database->query_to_hash_list("SELECT id, word FROM seeds WHERE word = '".mysql_real_escape_string($_GET['seed'])."' ORDER BY word ASC;");
-}
-elseif ( isset($_GET['seed']) && $_GET['seed']=='' ) {
-    $selected_seeds = $all_seeds;
-}
-else { $selected_seeds = array(); }
+	if ( isset($_GET['seed']) && $_GET['seed']!='' ) {
+   	 $selected_seeds = $database->query_to_hash_list("SELECT id, word FROM seeds WHERE word = '".mysql_real_escape_string($_GET['seed'])."' ORDER BY word ASC;");
+	}
+	
+	elseif ( isset($_GET['seed']) && $_GET['seed']=='' ) {
+    	$selected_seeds = $all_seeds;
+	}
 
-if ( isset($_GET['suffix']) && $_GET['suffix']!='' ) {
-    $selected_suffixes = $database->query_to_hash_list("SELECT id, suffix FROM suffixes WHERE suffix = '".mysql_real_escape_string($_GET['suffix'])."' ORDER BY suffix ASC;");
-}
-elseif ( isset($_GET['suffix']) && $_GET['suffix']=='' ) {
-    $selected_suffixes = $all_suffixes;
-}
-else { $selected_suffixes = array(); }
+	else { $selected_seeds = array(); }
+
+	if ( isset($_GET['suffix']) && $_GET['suffix']!='' ) {
+    	$selected_suffixes = $database->query_to_hash_list("SELECT id, suffix FROM suffixes WHERE suffix = '".mysql_real_escape_string($_GET['suffix'])."' ORDER BY suffix ASC;");
+	}
+
+	elseif ( isset($_GET['suffix']) && $_GET['suffix']=='' ) {
+    	$selected_suffixes = $all_suffixes;
+	}
+
+	else { $selected_suffixes = array(); }
 
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
@@ -45,13 +49,18 @@ else { $selected_suffixes = array(); }
             </select>
             <input type="submit" value="Submit" />
         </form>
-<?php foreach ($selected_seeds as $key => $seed) { ?>
-        <h3><?php print $seed; ?></h3>
-        <ul>
-<?php     foreach ($selected_suffixes as $suffix) { ?>
-            <li><?php print $seed.$suffix; ?></li>
-<?php     } ?>
-        </ul>
+<?php foreach ($selected_seeds as $key => $seed) { ?>    
+        <table>
+        	<tr>
+        		<td><h3><?php print $seed; ?></h3></td>
+        	
+<?php     
+				foreach ($selected_suffixes as $suffix) { ?>
+            		<td><?php print $seed.$suffix; ?></td>
+            		<td><input type=checkbox name="<?php print $seed.$suffix; ?>" /></td>
+<?php     		} ?>
+			</tr>
+        </table>	
 <?php } ?>
     </body>
 </html>
